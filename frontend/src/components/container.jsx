@@ -2,8 +2,8 @@ import React from 'react';
 
 const Container = () => {
     return (
-        <div>
-            Footer
+        <div>   
+            Main container
         </div>
     );
 }

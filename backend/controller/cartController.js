@@ -16,7 +16,6 @@ export const createCart = async (req,res) =>{
         return res.status(200).json(error)
     }
 }
-
 export const addToCart = async (req, res) => {
     try {
         const { pdtId, cartId } = req.body;
