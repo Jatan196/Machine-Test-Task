@@ -2,16 +2,16 @@ import { User } from "../model/user.js";
 
 
 export const signUp = async (req, res) => {
-      const { name, email, phone, address, password } = req?.body;
+    const { name, email, phone, address, password } = req?.body;
     console.log(req.body)
-    try {        
+    try {
         const userInfo = {
             name,
             email,
             phone,
             address,
             password // can use encryption for this
-        } 
+        }
         console.log(userInfo)
         const newUser = new User(userInfo);
 
@@ -27,8 +27,21 @@ export const signUp = async (req, res) => {
     }
 }
 export const signIn = async (req, res) => {
+    const { email, password } = req?.body;
+    console.log(req.body)
+    try {
+        const currUser = await User.findOne({ email: email });
 
-}
-export const signOut = async (req, res) => {
+        if (currUser && currUser.password === password) {
+            return res.status(200).json({ id: currUser._id });
+        } else {
+            return res.status(400).json({ message: "Bad auth" });
+        }
 
+    } catch (error) {
+        return res.status(400).json({
+            message: "error",
+            error
+        })
+    }
 }

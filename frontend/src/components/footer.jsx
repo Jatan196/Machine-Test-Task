@@ -59,7 +59,7 @@ const Footer = () => {
               alt="QR Code"
               className="mr-4"
             />
-            <div>
+            <div>   
               <button className="block mb-2 bg-gray-700 p-2 rounded">
                 Get it on Google Play
               </button>

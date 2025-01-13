@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import toast from "react-hot-toast";
 
 import { useDispatch } from 'react-redux';
@@ -7,37 +7,39 @@ import { useDispatch } from 'react-redux';
 
 const Login = () => {
     const [user, setUser] = useState({
-        username: "",
+        email: "",
         password: "",
     });
 
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     // const dispatch = useDispatch();
 
     const onSubmitHandler = async (e) => {
         e.preventDefault();
         console.log(user);
+       
+        try { 
+            const res = await fetch("http://localhost:8000/api/v1/user/signin", {
+                method: "GET", // Use POST method
+                headers: {
+                    "Content-Type": "application/json", // Inform the server about the data format
+                },
+                credentials: "include", 
+                body: JSON.stringify(user), 
+            });
+            console.log(res);   
+            Navigate("/home");
+            toast.success(res.data.message);
+        
+        } catch (error) {
+            toast.error(error.response?.data?.message);
+            console.log(error);
+        }
 
-        // try {
-        //     const res = await axios.post(`${BASE_URL}/api/v1/user/login`, user, {
-        //         headers: {
-        //             'Content-Type': 'application/json'
-        //         },
-        //         withCredentials: true
-        //     });
-        //     console.log(res);
-        //     navigate("/window");
-        //     toast.success(res.data.message);
-        //     dispatch(setAuthUser(res.data));
-        // } catch (error) {
-        //     toast.error(error.response?.data?.message);
-        //     console.log(error);
-        // }
-
-        // setUser({
-        //     username: "",
-        //     password: "",
-        // });
+        setUser({
+            username: "",
+            password: "",
+        });
     };
 
     return (
@@ -52,8 +54,8 @@ const Login = () => {
                             <div className="p-4">
                                 <input
                                     className="input input-bordered h-10 w-full"
-                                    value={user.username}
-                                    onChange={(e) => setUser({ ...user, username: e.target.value })}
+                                    value={user.email}
+                                    onChange={(e) => setUser({ ...user, email: e.target.value })}
                                     type="text"
                                     placeholder="Enter Username"
                                 />
@@ -70,7 +72,7 @@ const Login = () => {
                             <p className="text-center p-4">
                                 Don't Have An Account? <Link to="/register">Sign Up</Link>
                             </p>
-                            <button type="submit" className="btn btn-block btn-sm w-full">
+                            <button type="submit" className="btn btn-block btn-sm w-full bg-red-400">
                                 Login
                             </button>
                         </form>

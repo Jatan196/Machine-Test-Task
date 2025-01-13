@@ -16,6 +16,25 @@ export const createCart = async (req,res) =>{
         return res.status(200).json(error)
     }
 }
+
+export const viewCart = async (req,res)=>{
+    try {
+        const {cartId} = req.body;
+        const newC=new Cart.findOne({_id:cartId})
+
+        if(!newC){
+            return res.status(200).json({
+                message:"Invalid Cart"
+            })
+        }
+        return res.status(200).json({
+            data
+        })
+
+    } catch (error) {
+        return res.status(200).json(error)
+    }
+}
 export const addToCart = async (req, res) => {
     try {
         const { pdtId, cartId } = req.body;
